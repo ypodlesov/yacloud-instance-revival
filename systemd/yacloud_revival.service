@@ -1,0 +1,14 @@
+[Unit]
+    Description=YaCloud Revival Service
+    After=network.target
+
+[Service]
+    Type=simple
+    EnvironmentFile=/etc/yacloud_revival/env
+    ExecStart=/usr/bin/yacloud_revival
+    StandardOutput=append:/etc/yacloud_revival/general.log
+    StandardError=append:/etc/yacloud_revival/general.log
+    Restart=always
+
+[Install]
+    WantedBy=multi-user.target

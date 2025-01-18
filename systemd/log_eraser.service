@@ -1,0 +1,6 @@
+[Unit]
+   Description=Periodic Log Eraser
+
+[Service]
+   Type=oneshot
+   ExecStart=/usr/bin/erase_log.sh
