@@ -1,2 +1,2 @@
-IAM_TOKEN=
+YANDEX_OAUTH_TOKEN=
 CONFIG_PATH=/etc/yacloud_revival/config.yaml
