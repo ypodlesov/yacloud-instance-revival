@@ -11,7 +11,8 @@ import (
 	"sync"
 	"time"
 	"yacloud_revival/internal/token"
-	compute "yacloud_revival/third_party/cloudapi/github.com/yandex-cloud/go-genproto/yandex/cloud/compute/v1"
+	compute "yacloud_revival/internal/protobuf/cloud/compute/v1"
+	// compute "yacloud_revival/third_party/cloudapi/github.com/yandex-cloud/go-genproto/yandex/cloud/compute/v1"
 )
 
 //func init() {

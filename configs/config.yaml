@@ -6,6 +6,4 @@ revival_config:
 
   instances: # ids of instances to revive
     - instance_id: epdfqsns3dt8lr4vl7mi
-      check_health_period: 30s
     - instance_id: epdl0vtt6g6kf6j5j4cg
-      check_health_period: 5m

@@ -2,13 +2,34 @@
 
 git submodule update --init --recursive
 git submodule update --remote --recursive
+
+if command -v go > /dev/null 2>&1; then
+    echo "Go is installed."
+    go version
+else
+    echo "Installing Go."
+    wget https://dl.google.com/go/go1.23.5.linux-amd64.tar.gz
+    sudo tar -C /usr/local -xzf go1.23.5.linux-amd64.tar.gz
+    export PATH=$PATH:/usr/local/go/bin
+    export GOPATH=$HOME/go
+    rm -rf go1.23.5.linux-amd64.tar.gz
+    echo "Go is installed."
+    go version
+fi
+
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 export PATH="$PATH:$(go env GOPATH)/bin"
 
-cd third_party/cloudapi
+sudo apt install -y protobuf-compiler
 
-protoc -I=. -I=third_party/googleapis --go_out=. --go-grpc_out=. yandex/cloud/compute/v1/*.proto
-protoc -I=. -I=third_party/googleapis --go_out=. --go-grpc_out=. yandex/cloud/operation/operation.proto
+cd internal/protobuf
+
+protoc \
+    -I=. \
+    -I=googleapis \
+    --go_out=. \
+    --go-grpc_out=. yandex/cloud/compute/v1/*.proto
 
 cd ../..
 
