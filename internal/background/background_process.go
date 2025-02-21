@@ -1,20 +1,21 @@
 package bg_process
 
 import (
+	"context"
 	"log/slog"
 	"sync"
 	"yacloud_revival/internal/config"
+	"yacloud_revival/internal/token"
 )
 
 type BackgroundProcess struct {
-	Config *config.Config
-	Logger *slog.Logger
+	Config      *config.Config
+	Logger      *slog.Logger
+	TokenGetter *token.Token
 }
 
-func (bg *BackgroundProcess) Run(wg *sync.WaitGroup) {
+func (bg *BackgroundProcess) Run(ctx context.Context, wg *sync.WaitGroup) {
 	bg.Logger.Info("bg_process started")
-
-	var tasksWg sync.WaitGroup
 
 	for _, instance := range bg.Config.Instances {
 		t := &task{
@@ -22,13 +23,14 @@ func (bg *BackgroundProcess) Run(wg *sync.WaitGroup) {
 			instanceId:  instance.InstanceId,
 			period:      instance.CheckHealthPeriod,
 			logger:      bg.Logger,
+			tokenGetter: bg.TokenGetter,
 		}
-		tasksWg.Add(1)
-		go t.Run(&tasksWg)
+		wg.Add(1)
+		go func() {
+			t.Run(ctx, wg)
+			wg.Done()
+		}()
 	}
 
-	tasksWg.Wait()
-
-	bg.Logger.Info("bg_process finished")
-	wg.Done()
+	bg.Logger.Info("bg_process started tasks and finished")
 }
